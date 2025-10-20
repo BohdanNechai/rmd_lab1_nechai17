@@ -1,0 +1,37 @@
+# .github/workflows/validation.yaml
+
+name: Flutter Validation CI
+
+on:
+  # Запускати цей пайплайн при кожному Pull Request
+  pull_request:
+    branches: [ main ]
+  # Також запускати при push у гілку main (для фінальної перевірки)
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    # Виконувати на віртуальній машині Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # Крок 1: Отримати код
+      - uses: actions/checkout@v4
+
+      # Крок 2: Налаштувати Flutter SDK
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # Крок 3: Встановити залежності
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Крок 4: Запустити аналізатор (перевірка лінтера та помилок)
+      - name: Run Analyzer
+        run: flutter analyze
+
+      # Крок 5: Запустити тести (якщо є)
+      - name: Run Tests
+        run: flutter test
