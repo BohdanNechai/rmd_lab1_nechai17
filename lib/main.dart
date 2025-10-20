@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         // Якщо не число і не магічне слово
         setState(() {
+          // ignore: lines_longer_than_80_chars
           _message = '❌ Invalid input. Please enter a number or the correct spell.';
         });
       }
@@ -87,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
