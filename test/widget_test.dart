@@ -1,30 +1,43 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:lab1_rmd/main.dart';
+import 'package:lab1_rmd/main.dart'; // Змініть на ім'я вашого проекту
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  // ignore: lines_longer_than_80_chars
+  testWidgets('Input handles number addition and Avada Kedavra reset', (WidgetTester tester) async {
+    // Збірка нашого віджету (MyHomePage)
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
+    // 1. ПЕРЕВІРКА: Лічильник починається з 0
     expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // 2. Дія: Введення числа (наприклад, 10)
+    // Шукаємо поле вводу за його 'labelText' або 'hintText'
+    final inputFinder = find.byType(TextField);
+    expect(inputFinder, findsOneWidget);
+    
+    // Вводимо 10
+    await tester.enterText(inputFinder, '10');
+    
+    // Знаходимо кнопку 'Process' або іконку 'Send'
+    final processButtonFinder = find.byIcon(Icons.flash_on); 
+    
+    // Натискаємо кнопку для обробки вводу
+    await tester.tap(processButtonFinder);
+    await tester.pump(); // Перемальовуємо віджет
 
-    // Verify that our counter has incremented.
+    // 3. ПЕРЕВІРКА: Лічильник збільшився до 10
     expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('10'), findsOneWidget);
+    
+    // 4. Дія: Введення "Avada Kedavra"
+    await tester.enterText(inputFinder, 'Avada Kedavra');
+    await tester.tap(processButtonFinder);
+    await tester.pump(); 
+
+    // 5. ПЕРЕВІРКА: Лічильник скинувся до 0
+    expect(find.text('10'), findsNothing);
+    expect(find.text('0'), findsOneWidget);
   });
+
 }
